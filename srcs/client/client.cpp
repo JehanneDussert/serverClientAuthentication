@@ -98,11 +98,22 @@ int client::runClient()
 			close(this->_socket);
 			exit(-1);
 		}
+		if (strcmp(this->_req, "ok"))
+			len = recv(this->_socket, this->_resp, sizeof(this->_resp), 0);
+		else if (!strcmp(this->_req, "ok"))
+		{
+			recv(this->_socket, this->_resp, sizeof(SIZE), 0);
+			std::cout << "write\n";
+			// std::cout << this->_resp << std::endl;
+			writeFile();
+		}
+		
 		memset(&this->_req, 0, strlen(this->_req) * sizeof(char));
-		len = recv(this->_socket, this->_resp, sizeof(this->_resp), 0);
 		std::cout << this->_resp << std::endl;
 		if (!strcmp(this->_resp, "\n🔑 Password: "))
 			std::cin >> this->_req;
+		else if (!strcmp(this->_resp, "🔓 Success: valid key"))
+			strcpy(this->_req, "ok");
 		if (len != strlen(this->_resp) + 1)
 		{
 			perror("recv");

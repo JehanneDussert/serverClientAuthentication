@@ -16,6 +16,7 @@ server::server(void)
 	this->_nbClients = 0;
 	this->_minClients = 0;
 	this->_connectedClients = 0;
+	this->_file = FALSE;
 
 	return ;
 }
@@ -49,6 +50,7 @@ server  &server::operator=(server const &src)
     this->_working_set = src._working_set;
     this->_closeConct = src._closeConct;
     this->_key = src._key;
+	this->_file = FALSE;
 
 	strcpy(this->_resp, src._req);
 	strcpy(this->_resp, src._resp);
@@ -71,6 +73,7 @@ server::server(const int n)
 	this->_nbClients = 0;
 	this->_minClients = n;
 	this->_connectedClients = 0;
+	this->_file = FALSE;
 
 	return ;
 }

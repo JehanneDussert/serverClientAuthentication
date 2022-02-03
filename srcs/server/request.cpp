@@ -17,16 +17,24 @@ bool  server::getRequest(int i)
    }
    if (rc == 0)
    {
-      rmClient();
+      rmClient(i);
       this->_closeConct = TRUE;
       return (FALSE);
    }
-   if (!strcmp(this->_req, this->_key.c_str()))
+
+   if (!this->_file && !strcmp(this->_req, "ok"))
    {
-      strcpy(this->_resp, "🔓 Success: valid key\n");
-      this->_cnct[i] = 1;
+      // strcpy(this->_resp, "🔓 Ready to send file\n");
+      sendFile();
+      // std::cout << "file: " << this->_resp << std::endl;
+      this->_file = TRUE;
+   }
+   else if (!this->_cnct[i] && !strcmp(this->_req, this->_key.c_str()))
+   {
+      strcpy(this->_resp, "🔓 Success: valid key");
+      this->_cnct[i] = TRUE;
       this->_connectedClients++;
-      }
+   }
    else if (strlen(this->_req) && strcmp(this->_req, this->_key.c_str()))
    {
       strcpy(this->_resp, "🔐 Error: invalid key\n");
@@ -49,7 +57,11 @@ bool  server::getRequest(int i)
 bool  server::sendResponse(int i)
 {
    std::cout << ">> SEND RESPONSE <<" << std::endl;
-   int rc = send(i, this->_resp, strlen(this->_resp) + 1, 0);
+   int rc = 0;
+   if (this->_file)
+      send(i, this->_resp, SIZE, 0);
+   else
+      rc = send(i, this->_resp, strlen(this->_resp) + 1, 0);
 
    if (rc < 0)
    {

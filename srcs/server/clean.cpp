@@ -1,9 +1,12 @@
 #include "../../includes/server.hpp"
 
-void	server::rmClient()
+void	server::rmClient(int i)
 {
+   (void)i;
    this->_nbClients--;
    this->_connectedClients--;
+   // this->_cnct[i] = FALSE;
+   // std::cout << "ici" << std::endl;
 }
 
 void  server::closeConnection(int i)

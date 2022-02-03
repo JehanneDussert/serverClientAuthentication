@@ -23,6 +23,7 @@ class   server
         char                        _resp[255];
         bool                        _closeConct;
         std::string                 _key;
+        bool                        _file;
 
     public:
         server();
@@ -34,12 +35,14 @@ class   server
         int     runServer();
         int	    initSocket();
         int	    checkSelect(struct timeval *time);
-        void    rmClient();
+        void    rmClient(int i);
         void    closeConnection(int i);
         void    closeSockets(void);
         bool    newClient();
         bool    getRequest(int i);
         bool    sendResponse(int i);
+        int     sendFile();
+        int     getFile(FILE *f);
 };
 
 #endif

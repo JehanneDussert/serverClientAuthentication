@@ -4,8 +4,9 @@ SERVER_NAME = server
 CLIENT_PATH	= srcs/client/
 SERVER_PATH = srcs/server/
 
-CLIENT_FILES = main.cpp client.cpp
-SERVER_FILES = main.cpp server.cpp clean.cpp request.cpp init.cpp
+CLIENT_FILES = main.cpp client.cpp recvFile.cpp
+SERVER_FILES = main.cpp server.cpp clean.cpp request.cpp init.cpp \
+				sendFile.cpp
 
 CLIENT_SRCS = ${addprefix ${CLIENT_PATH}, ${CLIENT_FILES}}
 SERVER_SRCS = ${addprefix ${SERVER_PATH}, ${SERVER_FILES}}

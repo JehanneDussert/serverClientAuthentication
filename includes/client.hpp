@@ -20,6 +20,7 @@ class   client
         int         runClient();
         int         newSocket();
         int         handle_connection();
+        int         writeFile();
 };
 
 # define FALSE 0
