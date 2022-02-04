@@ -8,8 +8,9 @@ class   client
     private:
         int					_socket;
         struct sockaddr_in6 _addr;
-		char				_req[255];
-		char				_resp[255];
+		char				_req[1024];
+		char				_resp[1024];
+        bool                _completed;
     public:
         client();
         client(int socket);

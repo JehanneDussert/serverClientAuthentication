@@ -19,11 +19,12 @@ class   server
         struct sockaddr_in6          _addr;			// look diff with in
         struct fd_set               _master_set;
         struct fd_set               _working_set;
-        char                        _req[255];
-        char                        _resp[255];
+        char                        _req[1024];
+        char                        _resp[1024];
         bool                        _closeConct;
         std::string                 _key;
         bool                        _file;
+        bool                        _completed;
 
     public:
         server();
