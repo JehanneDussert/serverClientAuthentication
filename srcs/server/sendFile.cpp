@@ -1,38 +1,23 @@
 #include "../../includes/server.hpp"
-
-int server::getFile(FILE *f)
-{
-	char data[SIZE] = {0};
-   std::string buf;
-
-	while (fgets(data, SIZE, f) != NULL)
-	{
-      buf += data;
-		bzero(data, SIZE);
-	}
-
-   strcpy(this->_resp, buf.c_str());
-   buf.clear();
-
-	return (SUCCESS);
-}
-
+#include <iterator>
 int		server::sendFile()
 {
-	std::string		buf;
-	FILE *f;
+	std::string buf;
+	std::ifstream input( "files/encrypted", std::ios::binary );
+    // copies all data into buffer
+    std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(input), (std::istreambuf_iterator<char>()));
 
-	// encrypt here
-	const char *filename = "files/encrypted";
-	f = fopen(filename, "r");
-	if (f == NULL)
+	for (std::vector<unsigned char>::const_iterator it = buffer.begin(); it != buffer.end(); it++)
 	{
-		perror("file is null");
-		return (ERROR);
+		buf += *it;
 	}
-	if (getFile(f) == SUCCESS)
-	{
-			std::cout << "File sent to client" << std::endl;
-   }
+	// std::cout << "buf: " << buf << std::endl;
+	strcpy(this->_resp, buf.c_str());
+	std::cout << "resp: " << this->_resp << std::endl;
+	buf.clear();
+	std::cout<<"[SENDING FILE] File size: "<< strlen(this->_resp) <<" bytes." << std::endl;
+	this->_completed = TRUE;
+	this->_file = true;
+
 	return (SUCCESS);
 }

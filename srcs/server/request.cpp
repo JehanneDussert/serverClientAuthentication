@@ -21,15 +21,19 @@ bool  server::getRequest(int i)
       this->_closeConct = TRUE;
       return (FALSE);
    }
-
-   if (!this->_file && !strcmp(this->_req, "ok"))
+   if (!this->_file && !strcmp(this->_req, "done"))
+   {
+      this->_completed = TRUE;
+   }
+   else if (!this->_file && !strcmp(this->_req, "ok"))
    {
       // strcpy(this->_resp, "🔓 Ready to send file\n");
       sendFile();
       // std::cout << "file: " << this->_resp << std::endl;
       this->_file = TRUE;
+      this->_completed = TRUE;
    }
-   else if (!this->_cnct[i] && !strcmp(this->_req, this->_key.c_str()))
+   else if (!this->_completed && !this->_cnct[i] && !strcmp(this->_req, this->_key.c_str()))
    {
       strcpy(this->_resp, "🔓 Success: valid key");
       this->_cnct[i] = TRUE;
@@ -56,10 +60,21 @@ bool  server::getRequest(int i)
 
 bool  server::sendResponse(int i)
 {
+   if (this->_completed)
+   {
+      std::cout << "File has been sent\n";
+
+      this->_nbClients--;
+      this->_connectedClients--;
+      this->_cnct[i] = FALSE;
+      std::cout<<"[LOG] : File Transfer Complete.\n";
+      // close(i);
+      // closeConnection(i);
+   }
    std::cout << ">> SEND RESPONSE <<" << std::endl;
    int rc = 0;
    if (this->_file)
-      send(i, this->_resp, SIZE, 0);
+      send(i, this->_resp, strlen(this->_resp) + 1, 0);
    else
       rc = send(i, this->_resp, strlen(this->_resp) + 1, 0);
 
@@ -71,6 +86,12 @@ bool  server::sendResponse(int i)
    }
    memset(&this->_resp, 0, strlen(this->_resp) * sizeof(char));
    if (this->_cnct[i])
+   {
       std::cout << "File will be sent\n";
+
+      this->_nbClients--;
+      this->_connectedClients--;
+      this->_cnct[i] = FALSE;
+   }
    return (TRUE);
 }

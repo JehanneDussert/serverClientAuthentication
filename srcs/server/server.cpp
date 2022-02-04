@@ -17,6 +17,7 @@ server::server(void)
 	this->_minClients = 0;
 	this->_connectedClients = 0;
 	this->_file = FALSE;
+	this->_completed = FALSE;
 
 	return ;
 }
@@ -74,6 +75,7 @@ server::server(const int n)
 	this->_minClients = n;
 	this->_connectedClients = 0;
 	this->_file = FALSE;
+	this->_completed = FALSE;
 
 	return ;
 }

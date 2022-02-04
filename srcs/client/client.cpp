@@ -86,11 +86,13 @@ int client::runClient()
 
 	std::cout << ">>> CONNECTED ON PORT [" << PORT << "]" << std::endl;
 
+	this->newSocket();
+	this->handle_connection();
 	while (g_run)
 	{
-		this->newSocket();
-		this->handle_connection();
 
+		if (this->_completed)
+			break;
 		len = send(this->_socket, this->_req, strlen(this->_req) + 1, 0);
 		if (len != strlen(this->_req) + 1)
 		{
@@ -98,30 +100,27 @@ int client::runClient()
 			close(this->_socket);
 			exit(-1);
 		}
-		if (strcmp(this->_req, "ok"))
-			len = recv(this->_socket, this->_resp, sizeof(this->_resp), 0);
-		else if (!strcmp(this->_req, "ok"))
+		len = recv(this->_socket, this->_resp, sizeof(this->_resp), 0);
+		if (!this->_completed && !strcmp(this->_req, "ok"))
 		{
-			recv(this->_socket, this->_resp, sizeof(SIZE), 0);
-			std::cout << "write\n";
-			// std::cout << this->_resp << std::endl;
 			writeFile();
+			this->_completed = TRUE;
 		}
 		
 		memset(&this->_req, 0, strlen(this->_req) * sizeof(char));
 		std::cout << this->_resp << std::endl;
 		if (!strcmp(this->_resp, "\n🔑 Password: "))
 			std::cin >> this->_req;
-		else if (!strcmp(this->_resp, "🔓 Success: valid key"))
+		else if (!this->_completed && !strcmp(this->_resp, "🔓 Success: valid key"))
 			strcpy(this->_req, "ok");
-		if (len != strlen(this->_resp) + 1)
-		{
-			perror("recv");
-			close(this->_socket);
-			exit(-1);
-		}
+		// if (len != strlen(this->_resp) + 1)
+		// {
+		// 	perror("recv");
+		// 	close(this->_socket);
+		// 	exit(-1);
+		// }
 		memset(&this->_resp, 0, strlen(this->_resp) * sizeof(char));
-		close(this->_socket);
 	}
+	close(this->_socket);
 	return (SUCCESS);
 }
