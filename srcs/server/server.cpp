@@ -16,7 +16,6 @@ server::server(void)
 	this->_nbClients = 0;
 	this->_minClients = 0;
 	this->_connectedClients = 0;
-	this->_file = FALSE;
 	this->_completed = FALSE;
 
 	return ;
@@ -51,7 +50,6 @@ server  &server::operator=(server const &src)
     this->_working_set = src._working_set;
     this->_closeConct = src._closeConct;
     this->_key = src._key;
-	this->_file = FALSE;
 
 	strcpy(this->_resp, src._req);
 	strcpy(this->_resp, src._resp);
@@ -74,7 +72,6 @@ server::server(const int n)
 	this->_nbClients = 0;
 	this->_minClients = n;
 	this->_connectedClients = 0;
-	this->_file = FALSE;
 	this->_completed = FALSE;
 
 	return ;
@@ -91,7 +88,7 @@ server::~server(void)
 	return ;
 }
 
-int	server::checkSelect(struct timeval *time)
+int	server::_checkSelect(struct timeval *time)
 {
 	int ret = select(this->_max_sd + 1, &this->_working_set, NULL, NULL, time);
 	
@@ -108,7 +105,7 @@ int	server::runServer()
 	int    				desc_ready;
 	struct timeval    timeout;
 
-	initSocket();
+	this->_initSocket();
 	timeout.tv_sec  = 3 * 60;
 	timeout.tv_usec = 0;
 
@@ -116,7 +113,7 @@ int	server::runServer()
    {
     	memcpy(&this->_working_set, &this->_master_set, sizeof(this->_master_set));
       	std::cout << BOLD << ">>> SERVER IS RUNNING ON PORT [" << PORT << "]" << EOC << std::endl;
-		if ((desc_ready = checkSelect(&timeout)) <= 0)
+		if ((desc_ready = this->_checkSelect(&timeout)) <= 0)
 	  		break;
       	for (int i = 0; i <= this->_max_sd && desc_ready > 0; ++i)
 		{
@@ -125,27 +122,26 @@ int	server::runServer()
 				desc_ready -= 1;
 				if (i == this->_listen_sd)
 				{
-				if (!newClient())
+				if (!this->_newClient())
 					break ;
 				}
 				else
 				{
-				this->_closeConct = FALSE;
-				while (g_run)
-				{
-					if (!getRequest(i))
-						break;
-					if (!sendResponse(i))
-						break;
-				}
-				if (this->_closeConct)
-					closeConnection(i);
+					this->_closeConct = FALSE;
+					while (g_run)
+					{
+						if (!this->_getRequest(i))
+							break;
+						if (!this->_sendResponse(i))
+							break;
+					}
+					if (this->_closeConct)
+						this->_closeConnection(i);
 				}
 			}
 		}
    	}
 
-   	closeSockets();
-	
+   	this->_closeSockets();
 	return (SUCCESS);
 }

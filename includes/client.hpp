@@ -11,6 +11,9 @@ class   client
 		char				_req[1024];
 		char				_resp[1024];
         bool                _completed;
+        int                 _newSocket();
+        int                 _handle_connection();
+        int                 _writeFile();
     public:
         client();
         client(int socket);
@@ -19,9 +22,6 @@ class   client
         client      &operator=(client const &src);
 
         int         runClient();
-        int         newSocket();
-        int         handle_connection();
-        int         writeFile();
 };
 
 # define FALSE 0

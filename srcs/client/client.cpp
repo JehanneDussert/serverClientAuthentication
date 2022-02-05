@@ -54,7 +54,7 @@ client	&client::operator=(client const &src)
 	return *this;
 }
 
-int	client::newSocket()
+int	client::_newSocket()
 {
 	if ((this->_socket = socket(AF_INET6, SOCK_STREAM, 0)) < 0)
 	{
@@ -69,7 +69,7 @@ int	client::newSocket()
 	return (SUCCESS);
 }
 
-int	client::handle_connection()
+int	client::_handle_connection()
 {
 	if (connect(this->_socket, (struct sockaddr *)&this->_addr, sizeof(this->_addr)) < 0)
 	{
@@ -86,13 +86,10 @@ int client::runClient()
 
 	std::cout << ">>> CONNECTED ON PORT [" << PORT << "]" << std::endl;
 
-	this->newSocket();
-	this->handle_connection();
+	this->_newSocket();
+	this->_handle_connection();
 	while (g_run)
 	{
-
-		if (this->_completed)
-			break;
 		len = send(this->_socket, this->_req, strlen(this->_req) + 1, 0);
 		if (len != strlen(this->_req) + 1)
 		{
@@ -103,13 +100,16 @@ int client::runClient()
 		len = recv(this->_socket, this->_resp, sizeof(this->_resp), 0);
 		if (!this->_completed && !strcmp(this->_req, "ok"))
 		{
-			writeFile();
+			this->_writeFile();
 			this->_completed = TRUE;
+			break;
 		}
 		
-		memset(&this->_req, 0, strlen(this->_req) * sizeof(char));
+		memset(&this->_req, 0, (strlen(this->_req) + 1) * sizeof(char));
 		std::cout << this->_resp << std::endl;
-		if (!strcmp(this->_resp, "\n🔑 Password: "))
+		if (!strcmp(this->_resp, "Wait..."))
+			sleep(2);
+		else if (!strcmp(this->_resp, "\n🔑 Password: "))
 			std::cin >> this->_req;
 		else if (!this->_completed && !strcmp(this->_resp, "🔓 Success: valid key"))
 			strcpy(this->_req, "ok");
@@ -119,7 +119,7 @@ int client::runClient()
 		// 	close(this->_socket);
 		// 	exit(-1);
 		// }
-		memset(&this->_resp, 0, strlen(this->_resp) * sizeof(char));
+		memset(&this->_resp, 0, (strlen(this->_resp) + 1) * sizeof(char));
 	}
 	close(this->_socket);
 	return (SUCCESS);

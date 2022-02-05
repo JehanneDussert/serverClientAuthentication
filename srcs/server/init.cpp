@@ -1,6 +1,6 @@
 #include "../../includes/server.hpp"
 
-bool	server::newClient()
+bool	server::_newClient()
 {
 	std::cout << "New client function" << std::endl;
 
@@ -23,17 +23,13 @@ bool	server::newClient()
       FD_SET(this->_new_sd, &this->_master_set);
       if (this->_new_sd > this->_max_sd)
          this->_max_sd = this->_new_sd;
-      if (this->_nbClients >= this->_minClients)
-      {
-         strcpy(this->_resp, "\n🔑 Password: ");
-      }
       std::cout << "END | Number of clients: " << this->_nbClients << std::endl;
    } while (this->_new_sd != -1);
 
 	return (SUCCESS);
 }
 
-int	server::initSocket()
+int	server::_initSocket()
 {
 	int rc;
    this->_listen_sd = socket(AF_INET6, SOCK_STREAM, 0);

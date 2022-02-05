@@ -23,8 +23,16 @@ class   server
         char                        _resp[1024];
         bool                        _closeConct;
         std::string                 _key;
-        bool                        _file;
         bool                        _completed;
+        int	                        _initSocket();
+        int	                        _checkSelect(struct timeval *time);
+        void    					_rmClient(int i);
+        void    					_closeConnection(int i);
+        void    					_closeSockets(void);
+        bool    					_newClient();
+        bool    					_getRequest(int i);
+        bool    					_sendResponse(int i);
+        int     					_sendFile();
 
     public:
         server();
@@ -34,16 +42,6 @@ class   server
         server  &operator=(server const &src);
 		
         int     runServer();
-        int	    initSocket();
-        int	    checkSelect(struct timeval *time);
-        void    rmClient(int i);
-        void    closeConnection(int i);
-        void    closeSockets(void);
-        bool    newClient();
-        bool    getRequest(int i);
-        bool    sendResponse(int i);
-        int     sendFile();
-        int     getFile(FILE *f);
 };
 
 #endif

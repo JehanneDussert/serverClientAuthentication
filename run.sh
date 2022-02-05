@@ -18,25 +18,7 @@ case "${unameOut}" in
     Darwin*)    machine=Mac;;
 esac
 
-# if [ "$(uname)" == "Darwin" ]; then  
-# 	REQUIRED_PKG="boost"
-# 	echo Checking for $REQUIRED_PKG: $PKG_OK
-#     if [ "" = "$PKG_OK" ]; then
-#         echo "No $REQUIRED_PKG. Setting up $REQUIRED_PKG."
-#         brew install $REQUIRED_PKG
-#     fi
-# elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-# 	REQUIRED_PKG="libboost-all-dev"
-# 	echo Checking for $REQUIRED_PKG: $PKG_OK
-#     PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $REQUIRED_PKG|grep "install ok installed")
-#     if [ "" = "$PKG_OK" ]; then
-#         echo "No $REQUIRED_PKG. Setting up $REQUIRED_PKG."
-#         sudo apt-get --yes install $REQUIRED_PKG
-#     fi
-# fi
-
 # CHECK IF OPENSSL IS INSTALLED
-
 
 ##############################################################################################################################
 #                                   																						 #
@@ -49,18 +31,9 @@ if [ $# -eq 0 ]
     echo "Please wait..."
     make re
     echo "Generating secret key..."
-    if [ "$(uname)" == "Darwin" ]; then
-      openssl rand -base64 32 > .key
-      openssl enc -e -aes-256-cbc -in files/toEncrypt.txt -out files/encrypted -pass pass:.key
-      # openssl enc -d -aes-256-cbc -in files/encrypted.txt -out files/decrypted.txt -pass pass:.key
-    elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-      openssl rand -base64 32 > .key
-      openssl enc -e -aes-256-cbc -in files/toEncrypt.txt -out files/encrypted -pass pass:.key
-      # date +%s | sha256sum | base64 | head -c 32 > .key
-    fi  
+    openssl rand -base64 32 > .key
+    openssl enc -e -aes-256-cbc -in files/toEncrypt.txt -out files/encrypted -pass pass:.key
 fi
-
-
 
 ##############################################################################################################################
 #                                   																						 #
@@ -81,11 +54,10 @@ function test {
   done < $filename
 }
 
-
 if [ "$1" == "test" ]
   then
     test
- fi
+fi
 
 ##############################################################################################################################
 #                                   																						 #
@@ -93,14 +65,11 @@ if [ "$1" == "test" ]
 #                                   																						 #
 ##############################################################################################################################
 
-# if clean is called
-# make fclean
-# rm .key
 if [ "$1" == "clean" ]
   then
     make fclean
     rm .key
-    rm files/decrypted
+    rm files/decrypted.txt
     rm files/encrypted
-    rm recv
+    rm files/recv
  fi
