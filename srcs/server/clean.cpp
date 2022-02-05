@@ -20,9 +20,10 @@ void  server::_closeConnection(int i)
 
 void    server::_closeSockets()
 {
-    for (int i = 0; i <= this->_max_sd; ++i)
-    {
-        if (FD_ISSET(i, &this->_master_set))
-            close(i);
-    }
+   for (int i = 0; i <= this->_max_sd; ++i)
+   {
+      if (FD_ISSET(i, &this->_master_set))
+         close(i);
+   }
+   // system("rm files/encrypted");
 }

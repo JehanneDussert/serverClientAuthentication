@@ -2,11 +2,9 @@
 
 bool	server::_newClient()
 {
-	std::cout << "New client function" << std::endl;
-
    do
    {
-      std::cout << "BEGIN | Number of clients: " << this->_nbClients << std::endl;
+      // std::cout << "BEGIN | Number of clients: " << this->_nbClients << std::endl;
       this->_new_sd = accept(this->_listen_sd, NULL, NULL);
       this->_cnct.push_back(FALSE);
       if (this->_new_sd < 0)
@@ -18,12 +16,12 @@ bool	server::_newClient()
          }
          return (FALSE);
       }
-      std::cout << ">> New connection <<" << std::endl;
+      std::cout << "[+] New connection" << std::endl;
       this->_nbClients++;
       FD_SET(this->_new_sd, &this->_master_set);
       if (this->_new_sd > this->_max_sd)
          this->_max_sd = this->_new_sd;
-      std::cout << "END | Number of clients: " << this->_nbClients << std::endl;
+      std::cout << "[+] Number of clients: " << this->_nbClients << std::endl;
    } while (this->_new_sd != -1);
 
 	return (SUCCESS);

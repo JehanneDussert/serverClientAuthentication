@@ -14,6 +14,8 @@ class   client
         int                 _newSocket();
         int                 _handle_connection();
         int                 _writeFile();
+        int                 _fileSize;
+        void                _getSize(const std::string& address);
     public:
         client();
         client(int socket);

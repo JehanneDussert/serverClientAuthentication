@@ -32,7 +32,6 @@ if [ $# -eq 0 ]
     make re
     echo "Generating secret key..."
     openssl rand -base64 32 > .key
-    openssl enc -e -aes-256-cbc -in files/toEncrypt.txt -out files/encrypted -pass pass:.key
 fi
 
 ##############################################################################################################################

@@ -6,6 +6,7 @@ client::client(void) : _socket(0)
 	memset(&this->_addr, 0, sizeof(struct sockaddr_in6));
 	memset(&this->_req, 0, sizeof(char));
 	memset(&this->_resp, 0, sizeof(char));
+	this->_fileSize = 0;
 
 	return ;
 }
@@ -24,6 +25,7 @@ client::client(int socket)
 	memset(&this->_addr, 0, sizeof(struct sockaddr_in6));
 	memset(&this->_req, 0, sizeof(char));
 	memset(&this->_resp, 0, sizeof(char));
+	this->_fileSize = 0;
 
 	return ;
 }
@@ -82,14 +84,16 @@ int	client::_handle_connection()
 
 int client::runClient()
 {
-   unsigned long len;
+   unsigned long	len;
+   int				toRecv = 0;
 
-	std::cout << ">>> CONNECTED ON PORT [" << PORT << "]" << std::endl;
+	std::cout << BOLD << ">>> CONNECTED ON PORT [" << PORT << "]" << EOC << std::endl;
 
 	this->_newSocket();
 	this->_handle_connection();
 	while (g_run)
 	{
+		std::cout << "run\n";
 		len = send(this->_socket, this->_req, strlen(this->_req) + 1, 0);
 		if (len != strlen(this->_req) + 1)
 		{
@@ -97,28 +101,42 @@ int client::runClient()
 			close(this->_socket);
 			exit(-1);
 		}
-		len = recv(this->_socket, this->_resp, sizeof(this->_resp), 0);
-		if (!this->_completed && !strcmp(this->_req, "ok"))
+		if (!this->_fileSize)
+			len = recv(this->_socket, this->_resp, sizeof(this->_resp) + 1, 0);
+		std::cout << "recv :" << sizeof(this->_resp) << std::endl;
+		if (!this->_fileSize && !this->_completed && !strcmp(this->_req, "ok"))
 		{
+			std::cout << "atoi\n";
+			this->_fileSize = atoi(this->_resp);
+			toRecv = this->_fileSize;
+		}
+		else if (this->_fileSize)
+		{
+			std::cout << "Going to write\n";
 			this->_writeFile();
 			this->_completed = TRUE;
 			break;
 		}
-		
+		// std::cout << "resp: " << this->_resp << std::endl;
 		memset(&this->_req, 0, (strlen(this->_req) + 1) * sizeof(char));
 		std::cout << this->_resp << std::endl;
 		if (!strcmp(this->_resp, "Wait..."))
 			sleep(2);
-		else if (!strcmp(this->_resp, "\n🔑 Password: "))
+		else if (!strcmp(this->_resp, "🔑 Password: "))
 			std::cin >> this->_req;
-		else if (!this->_completed && !strcmp(this->_resp, "🔓 Success: valid key"))
+		else if (this->_fileSize || (!this->_completed && !strcmp(this->_resp, "🔓 Success: valid key")))
+		{
+			std::cout << "ok\n";
 			strcpy(this->_req, "ok");
-		// if (len != strlen(this->_resp) + 1)
-		// {
-		// 	perror("recv");
-		// 	close(this->_socket);
-		// 	exit(-1);
-		// }
+		}
+		std::cout << "resp: " << this->_resp << std::endl;
+		if (!this->_fileSize && len != strlen(this->_resp) + 1)
+		{
+			std::cout << "Len: " << this->_fileSize << " " << len << std::endl;
+			perror("recv");
+			close(this->_socket);
+			exit(-1);
+		}
 		memset(&this->_resp, 0, (strlen(this->_resp) + 1) * sizeof(char));
 	}
 	close(this->_socket);

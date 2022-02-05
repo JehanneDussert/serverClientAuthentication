@@ -39,11 +39,13 @@ In case of failure, the server will send an error message and ask for the secret
 
 ## 🔎 Download encrypted file
 
-Once encrypted, the file is sent by the server through a socket, the client receives it and writes it into a file.
+Once encrypted, the file (files/encrypted) is sent by the server through a socket, the client receives it and writes it into a file.
 
 Sending an encrypted file can be complex. To get around this problem, each encrypted character is inserted into a buffer which is a char vector.
 
 I found most of the answers to my questions about sending and receiving encrypted files on Stackoverflow and Youtube.
+
+Once written, the file is downloaded in files/ and named 'recv'.
 
 ## 💡 Usage
 
@@ -69,3 +71,4 @@ In an other terminal, run a client
 - [File Transfer using TCP Socket in C | Socket Programming](https://www.youtube.com/watch?v=7d7_G81uews&ab_channel=IdiotDeveloper)
 - [How to read a binary file into a vector](https://stackoverflow.com/questions/15138353/how-to-read-a-binary-file-into-a-vector-of-unsigned-chars)
 - [Reading and writing binary file](https://stackoverflow.com/questions/5420317/reading-and-writing-binary-file)
+- [Determine the size of a binary file](https://stackoverflow.com/questions/13648066/determine-the-size-of-a-binary-file)
