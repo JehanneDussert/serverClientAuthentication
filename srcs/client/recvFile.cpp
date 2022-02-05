@@ -2,8 +2,6 @@
 
 int     client::_writeFile()
 {
-    // char    buf[this->_fileSize];
-    // recv(this->_socket, buf, bytes_received, 0);
     std::string const file("files/recv");
     std::ofstream f(file.c_str(), std::ios::binary);
     
