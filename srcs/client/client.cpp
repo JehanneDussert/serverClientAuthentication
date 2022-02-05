@@ -85,7 +85,6 @@ int	client::_handle_connection()
 int client::runClient()
 {
    unsigned long	len;
-   int				toRecv = 0;
 
 	std::cout << BOLD << ">>> CONNECTED ON PORT [" << PORT << "]" << EOC << std::endl;
 
@@ -93,7 +92,6 @@ int client::runClient()
 	this->_handle_connection();
 	while (g_run)
 	{
-		std::cout << "run\n";
 		len = send(this->_socket, this->_req, strlen(this->_req) + 1, 0);
 		if (len != strlen(this->_req) + 1)
 		{
@@ -101,18 +99,16 @@ int client::runClient()
 			close(this->_socket);
 			exit(-1);
 		}
-		if (!this->_fileSize)
-			len = recv(this->_socket, this->_resp, sizeof(this->_resp) + 1, 0);
-		std::cout << "recv :" << sizeof(this->_resp) << std::endl;
+		if (this->_completed)
+			break;
+		len = recv(this->_socket, this->_resp, sizeof(this->_resp) + 1, 0);
+		
 		if (!this->_fileSize && !this->_completed && !strcmp(this->_req, "ok"))
 		{
-			std::cout << "atoi\n";
 			this->_fileSize = atoi(this->_resp);
-			toRecv = this->_fileSize;
 		}
 		else if (this->_fileSize)
 		{
-			std::cout << "Going to write\n";
 			this->_writeFile();
 			this->_completed = TRUE;
 			break;
@@ -126,13 +122,10 @@ int client::runClient()
 			std::cin >> this->_req;
 		else if (this->_fileSize || (!this->_completed && !strcmp(this->_resp, "🔓 Success: valid key")))
 		{
-			std::cout << "ok\n";
 			strcpy(this->_req, "ok");
 		}
-		std::cout << "resp: " << this->_resp << std::endl;
 		if (!this->_fileSize && len != strlen(this->_resp) + 1)
 		{
-			std::cout << "Len: " << this->_fileSize << " " << len << std::endl;
 			perror("recv");
 			close(this->_socket);
 			exit(-1);

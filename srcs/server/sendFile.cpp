@@ -16,7 +16,6 @@ int		server::_sendFile()
 {
 	std::string buf;
 	
-    // copies all data into buffer
 	std::ifstream input("files/encrypted", std::ios::binary);
     std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(input), (std::istreambuf_iterator<char>()));
 	int i = 0;
@@ -26,9 +25,6 @@ int		server::_sendFile()
 		buf += *it;
 	}
 	strcpy(this->_resp, buf.c_str());
-	std::cout << "buf: " << buf << std::endl;
-	std::cout << "this->_resp: " << this->_resp << std::endl;
-	// std::cout << "resp: " << this->_resp << std::endl;
 	buf.clear();
 	std::cout<<"[+] File size: "<< i <<" bytes." << std::endl;
 	this->_completed = TRUE;

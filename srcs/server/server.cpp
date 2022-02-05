@@ -122,8 +122,8 @@ int	server::runServer()
 				desc_ready -= 1;
 				if (i == this->_listen_sd)
 				{
-				if (!this->_newClient())
-					break ;
+					if (!this->_newClient())
+						break ;
 				}
 				else
 				{

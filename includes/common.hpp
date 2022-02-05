@@ -24,6 +24,8 @@
 # include <sys/ioctl.h>
 # include <vector>
 # include <iterator>
+# include <string>
+# include <sstream>
 
 # define EOC "\033[0m"
 # define BOLD "\033[1;37m"
