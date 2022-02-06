@@ -2,10 +2,11 @@
 
 void	server::_rmClient(int i)
 {
-   if (!this->_cnct[i])
-   {
-      this->_nbClients--;
-   }
+   (void)i;
+   // if (!this->_cnct[i])
+   // {
+   //    this->_nbClients--;
+   // }
 }
 
 void  server::_closeConnection(int i)

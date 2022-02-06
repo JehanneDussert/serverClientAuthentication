@@ -85,11 +85,10 @@ int	server::runServer()
 	this->_initSocket();
 	timeout.tv_sec  = 3 * 60;
 	timeout.tv_usec = 0;
-
    	while (g_run)
    	{
     	memcpy(&this->_working_set, &this->_master_set, sizeof(this->_master_set));
-      	std::cout << BOLD << ">>> SERVER IS RUNNING ON PORT [" << PORT << "]" << EOC << std::endl;
+      	std::cout << BOLD << ">>> SERVER IS LISTENNING ON PORT [" << PORT << "]" << EOC << std::endl;
 		if ((desc_ready = this->_checkSelect(&timeout)) <= 0)
 	  		break;
       	for (int i = 0; i <= this->_max_sd && desc_ready > 0; ++i)

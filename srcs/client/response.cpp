@@ -10,11 +10,11 @@ void	client::_analyzeResp(unsigned long const len)
 	{
 		strcpy(this->_req, std::to_string(this->_key).c_str());
 	}
-	else if (this->_fileSize || (!this->_completed && !strcmp(this->_resp, "🔓 Success: valid key")))
+	else if ((!this->_completed && !strcmp(this->_resp, "🔓 Success: valid key")))
 	{
 		strcpy(this->_req, "ok");
 	}
-	if (!this->_fileSize && len != strlen(this->_resp) + 1 && strcmp(this->_resp, "Wait..."))
+	if (len != strlen(this->_resp) + 1 && strcmp(this->_resp, "Wait..."))
 	{
 		perror("recv");
 		close(this->_socket);

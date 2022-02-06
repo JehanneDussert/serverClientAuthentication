@@ -1,6 +1,6 @@
 #include "../../includes/server.hpp"
 
-void  server::_getKey()
+int  server::_getKey()
 {
 	std::ifstream	file(".key");
 	std::string		line;
@@ -19,7 +19,7 @@ void  server::_getKey()
 	this->_key = atoi(key.c_str());
    file.close();
 
-   return ;
+   return (this->_key);
 }
 
 int	server::_checkSelect(struct timeval *time)
@@ -49,12 +49,12 @@ bool	server::_newClient()
          }
          return (FALSE);
       }
-      std::cout << "[+] New connection" << std::endl;
+      std::cout << "[S] New connection" << std::endl;
       this->_nbClients++;
       FD_SET(this->_new_sd, &this->_master_set);
       if (this->_new_sd > this->_max_sd)
          this->_max_sd = this->_new_sd;
-      std::cout << "[+] Number of clients: " << this->_nbClients << std::endl;
+      std::cout << "[S] Number of clients: " << this->_nbClients << std::endl;
    } while (this->_new_sd != -1);
 
 	return (SUCCESS);

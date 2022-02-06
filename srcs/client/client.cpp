@@ -8,7 +8,6 @@ client::client(void) : _socket(0)
 	memset(&this->_resp, 0, sizeof(char));
 	memset(this->_resp, 0, strlen(this->_resp));
 	memset(this->_req, 0, strlen(this->_req));
-	this->_fileSize = 0;
 	this->_getKey();
 
 	return ;
@@ -28,7 +27,6 @@ client::client(int socket)
 	memset(&this->_resp, 0, sizeof(char));
 	memset(this->_resp, 0, strlen(this->_resp));
 	memset(this->_req, 0, strlen(this->_req));
-	this->_fileSize = 0;
 	this->_socket = socket;
 	this->_getKey();
 
@@ -78,7 +76,7 @@ int client::runClient()
 			break;
 		}
 		memset(&this->_req, 0, (strlen(this->_req) + 1) * sizeof(char));
-		std::cout << this->_resp << std::endl;
+		std::cout << "[C] " << this->_resp << std::endl;
 		this->_analyzeResp(len);
 	}
 	close(this->_socket);

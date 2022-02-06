@@ -39,7 +39,6 @@
 # define FALSE          0
 # define ERROR          -1
 # define SUCCESS        0
-# define PATH           "../files/encrypted"
 # define SIZE           1024
 
 static volatile int g_run = 1;

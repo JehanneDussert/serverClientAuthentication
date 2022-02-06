@@ -4,8 +4,7 @@ void  server::_analyzeReq(int const i)
 {
    if (!strcmp(this->_req, "ok"))
    {
-      this->_encrypt();
-      this->_cnct[i] = TRUE;
+      this->_encrypt(i);
    }
    else if (!this->_completed && !this->_cnct[i] && !strcmp(this->_req, std::to_string(this->_key).c_str()))
    {
@@ -49,7 +48,7 @@ bool  server::_getRequest(int i)
       this->_closeConct = TRUE;
       return (FALSE);
    }
-   std::cout << "[+] Request received | " << strlen(this->_req) << " bytes" << std::endl;
+   std::cout << "[S] Request received | " << strlen(this->_req) << " bytes" << std::endl;
    this->_analyzeReq(i);
    memset(&this->_req, 0, (strlen(this->_req) + 1) * sizeof(char));
    len = rc;
@@ -66,12 +65,12 @@ bool  server::_sendResponse(int i)
    {
       // this->_nbClients--;
       // this->_cnct[i] = FALSE;
-      std::cout<<"[+] File transfer completed" << std::endl;
+      std::cout<<"[S] File transfer completed" << std::endl;
    }
    this->_fileSize ? len = this->_fileSize : len = strlen(this->_resp);
    rc = send(i, this->_resp, len + 1, 0);
 
-   std::cout << "[+] Response sent" << std::endl;
+   std::cout << "[S] Response sent" << std::endl;
    if (this->_cnct[i])
    {
       this->_fileSize = 0;
@@ -86,7 +85,7 @@ bool  server::_sendResponse(int i)
    memset(&this->_resp, 0, (strlen(this->_resp) + 1) * sizeof(char));
    if (this->_cnct[i])
    {
-      std::cout << "[+] Client " << i << " is connected" << std::endl;
+      std::cout << "[S] Client " << i << " is connected" << std::endl;
    }
    return (TRUE);
 }

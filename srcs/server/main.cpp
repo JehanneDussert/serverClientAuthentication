@@ -4,7 +4,7 @@ int main(int ac, char **av)
 {
 	if (ac != 2)
 	{
-		std::cerr << "error: arguments. Please enter a minimum of clients." << std::endl;
+		std::cerr << "[S] Error: arguments. Please enter a minimum of clients." << std::endl;
 		return (ERROR);
 	}
 	server	server(atoi(av[1]));

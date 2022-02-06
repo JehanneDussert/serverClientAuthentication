@@ -6,25 +6,17 @@
 #                                   																						 #
 ##############################################################################################################################
 
-EOC="\033[0m"
-BOLD="\033[1;37m"
-RED="\033[0;31m"
-GREEN="\032[0;31m"
-YELLOW="\133[0;31m"
-
-unameOut="$(uname -s)"
-case "${unameOut}" in
-    Linux*)     machine=Linux;;
-    Darwin*)    machine=Mac;;
-esac
+EOC='\033[0m'
+BOLD='\033[1;37m'
+RED='\033[0;31m'
+GREEN='\032[0;31m'
+YELLOW='\133[0;31m'
 
 function clean {
-  rm files/decrypted.txt
-  rm files/encrypted
-  rm files/recv
+  [ -e decrypt.txt ] && rm decrypt.txt
+  [ -e encrypted.bin ] && rm encrypted.bin
+  [ -e .key ] && rm .key
 }
-
-# CHECK IF OPENSSL IS INSTALLED
 
 ##############################################################################################################################
 #                                   																						 #
@@ -34,6 +26,7 @@ function clean {
 
 if [ $# -eq 0 ]
   then
+    clean
     echo "Please wait..."
     make re
     echo "Generating secret key..."
@@ -46,7 +39,6 @@ if [ "$1" == "re" ]
     echo "Please wait..."
     make re
     echo "Generating secret key..."
-    openssl rand -base64 32 > .key
 fi
 
 if [ "$1" == "up" ]
@@ -62,30 +54,53 @@ fi
 ##############################################################################################################################
 
 function test {
-  i=1;
-	echo "Testing server with only one client..."
-  ./server 1
-}
+  make
+  i=1
 
-function testClient {
-  ./client
-  filename='.key'
-  n=1
-  while read line; do
-  # reading each line
-    echo "Line No. $n : $line"
-    n=$((n+1))
-  done < $filename
+  ps -ef | grep your_process_name | grep -v grep | awk '{print $2}' | xargs kill
+
+	printf "\n-----------------------------------------------------------------
+| Testing server with no argument (expected minimum of clients) |
+-----------------------------------------------------------------\n"
+  ./server
+
+	printf "\n\n-------------------------------------------------------------
+| Testing server with only one client (expected at least 1) |
+-------------------------------------------------------------\n"
+  ps -ef | grep your_process_name | grep -v grep | awk '{print $2}' | xargs kill
+  ./server §i &
+  ./client &
+  sleep 5
+  # (trap 'kill 0' SIGINT; ./server ./client)
+
+  i=3
+	printf "\n\n-------------------------------------------------------
+| Testing server with 3 clients (expected at least 3) |
+-------------------------------------------------------\n"
+  ps -ef | grep your_process_name | grep -v grep | awk '{print $2}' | xargs kill
+  ./server §i &
+  ./client &
+  ./client &
+  ./client &
+  sleep 5
+  # (trap 'kill 0' SIGINT; ./server ./client ./client ./client)
+  
+  i=1
+	printf "\n\n-------------------------------------------------------
+| Testing server with 2 clients (expected at least 1) |
+-------------------------------------------------------\n"
+  ps -ef | grep your_process_name | grep -v grep | awk '{print $2}' | xargs kill
+  ./server §i &
+  ./client &
+  ./client &
+  sleep 5
+  # (trap 'kill 0' SIGINT; ./server ./client ./client)
+  ps -ef | grep your_process_name | grep -v grep | awk '{print $2}' | xargs kill
 }
 
 if [ "$1" == "test" ]
   then
     test
-fi
-
-if [ "$1" == "client" ]
-  then
-    testClient
 fi
 
 ##############################################################################################################################

@@ -31,8 +31,8 @@ class   server
         bool    					_getRequest(int i);
         void                        _analyzeReq(int const i);
         bool    					_sendResponse(int i);
-        void                        _encrypt();
-        void                        _getKey();
+        void                        _encrypt(int i);
+        int                         _getKey();
 
     public:
         server();

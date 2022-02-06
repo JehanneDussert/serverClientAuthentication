@@ -2,22 +2,23 @@
 
 void	client::_decrypt()
 {
-    std::fstream fin;
-    std::fstream fout;
-	char c;
-    fin.open("encrypt.txt", std::fstream::in);
-    fout.open("decrypt.txt", std::fstream::out);
- 
-    while (fin >> std::noskipws >> c)
+	char			c;
+    std::ifstream	recv;
+    std::ofstream	decrypt;
+
+    recv.open("encrypted.bin");
+    decrypt.open("decrypt.txt");
+    while (recv >> std::noskipws >> c)
 	{
         int temp = (c - this->_key);
-        fout << (char)temp;
+        decrypt << (char)temp;
     }
-    fin.close();
-    fout.close();
-	std::cout << "📁 Download completed" << std::endl;
+    recv.close();
+    decrypt.close();
+	std::cout << "[C] " << "✅ File decrypted" << std::endl;
 	this->_completed = TRUE;
-	system("rm encrypt.bin");
+	// system("rm encrypted.bin");
+	std::cout << "[C] " << "📁 Download completed" << std::endl;
 
 	return ;
 }

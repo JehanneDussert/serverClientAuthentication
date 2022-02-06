@@ -2,15 +2,17 @@
 
 The objective of this project is to create a server that requires clients to authenticate themselves through a shared key. Once a certain number of clients are connected, the server allows the download of an encrypted file.
 
+<p align="center">
+	<img src="./assets/compressed.mp4" >
+</p>
+
 ## ✅ Completed
 - Server-client part
 - Secret key generation with openSSL
 - Checking client key once enough clients are connected
 - Encrypted file: send + receive
-
-## 📈 To be completed
-- Improve script bash
 - Tests: several clients, large files etc
+- Script bash: test, clean, update
 
 ## 🔎 Server-client
 
@@ -26,7 +28,7 @@ All data and functions members of the server class and client class are in priva
 
 ## 🔎 Client authentication
 
-Key generator: openSSL.
+Key generator command: /dev/urandom.
 [Advantage] : Easy to use.
 
 The key is created when the run.sh script is launched and written in a .key file.
@@ -59,6 +61,20 @@ In an other terminal, run a client
 ./client
 ```
 
+To clean:
+```
+bash run.sh clean
+```
+
+To test:
+```
+bash run.sh test
+```
+
+Update:
+```
+bash run.sh up
+```
 
 ## 🖇 Reference
 - [Sécurisez vos données avec la cryptographie](https://openclassrooms.com/fr/courses/1757741-securisez-vos-donnees-avec-la-cryptographie/6031691-decouvrez-la-cryptographie-moderne)
