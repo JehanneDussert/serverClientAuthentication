@@ -54,7 +54,6 @@ bool	server::_newClient()
       FD_SET(this->_new_sd, &this->_master_set);
       if (this->_new_sd > this->_max_sd)
          this->_max_sd = this->_new_sd;
-      std::cout << "[S] Number of clients: " << this->_nbClients << std::endl;
    } while (this->_new_sd != -1);
 
 	return (SUCCESS);
