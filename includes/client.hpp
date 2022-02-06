@@ -7,7 +7,7 @@ class   client
 {
     private:
         int					_socket;
-        std::string         _key;
+        int                  _key;
         struct sockaddr_in6 _addr;
 		char				_req[1024];
 		char				_resp[1024];
@@ -15,10 +15,11 @@ class   client
         int                 _fileSize;
         int                 _newSocket();
         int                 _handle_connection();
-        int                 _writeFile(int const len);
         void                _getSize(const std::string& address);
         void                _analyzeResp(unsigned long const len);
         void                _analyzeReq(unsigned long *len);
+        void                _getKey();
+        void                _decrypt();
     public:
         client();
         client(int socket);

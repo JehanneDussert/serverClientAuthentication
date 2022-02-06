@@ -8,7 +8,7 @@ void	client::_analyzeResp(unsigned long const len)
 	}
 	else if (!strcmp(this->_resp, "🔑 Password: "))
 	{
-		strcpy(this->_req, this->_key.c_str());
+		strcpy(this->_req, std::to_string(this->_key).c_str());
 	}
 	else if (this->_fileSize || (!this->_completed && !strcmp(this->_resp, "🔓 Success: valid key")))
 	{

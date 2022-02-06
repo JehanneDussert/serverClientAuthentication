@@ -37,7 +37,7 @@ if [ $# -eq 0 ]
     echo "Please wait..."
     make re
     echo "Generating secret key..."
-    openssl rand -base64 32 > .key
+    od -A n -t d -N 1 /dev/urandom >> .key
 fi
 
 if [ "$1" == "re" ]

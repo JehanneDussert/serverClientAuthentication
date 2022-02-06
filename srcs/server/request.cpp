@@ -2,16 +2,12 @@
 
 void  server::_analyzeReq(int const i)
 {
-   if (!strcmp(this->_req, "ok") && !this->_fileSize)
+   if (!strcmp(this->_req, "ok"))
    {
-      this->_getFileSize();
-   }
-   if (!strcmp(this->_req, "ok") && this->_fileSize)
-   {
-      this->_sendFile();
+      this->_encrypt();
       this->_cnct[i] = TRUE;
    }
-   else if (!this->_completed && !this->_cnct[i] && !strcmp(this->_req, this->_key.c_str()))
+   else if (!this->_completed && !this->_cnct[i] && !strcmp(this->_req, std::to_string(this->_key).c_str()))
    {
       strcpy(this->_resp, "🔓 Success: valid key");
       this->_cnct[i] = TRUE;
@@ -20,7 +16,7 @@ void  server::_analyzeReq(int const i)
    {
       strcpy(this->_resp, "🔑 Password: ");
    }
-   else if (strlen(this->_req) && strcmp(this->_req, this->_key.c_str()))
+   else if (strlen(this->_req) && strcmp(this->_req, std::to_string(this->_key).c_str()))
    {
       strcpy(this->_resp, "🔐 Error: invalid key");
    }

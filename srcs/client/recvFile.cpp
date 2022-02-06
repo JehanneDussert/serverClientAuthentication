@@ -1,21 +1,23 @@
 #include "../../includes/client.hpp"
 
-int     client::_writeFile(int const len)
+void	client::_decrypt()
 {
-    std::string const file = "recv";
-    std::ofstream f(file.c_str(), std::ios::binary);
-    this->_fileSize = len;
-
-    for (int i = 0; i < this->_fileSize; i++)
-    {
-        f.write(&(this->_resp)[i],sizeof((this->_resp)[i]));
+    std::fstream fin;
+    std::fstream fout;
+	char c;
+    fin.open("encrypt.txt", std::fstream::in);
+    fout.open("decrypt.txt", std::fstream::out);
+ 
+    while (fin >> std::noskipws >> c)
+	{
+        int temp = (c - this->_key);
+        fout << (char)temp;
     }
-    f.close();
-
-    system("openssl enc -d -aes-256-cbc -in recv -out decrypted.txt -pass pass:.key");
-    system("rm recv");
-	this->_completed = TRUE;
+    fin.close();
+    fout.close();
 	std::cout << "📁 Download completed" << std::endl;
+	this->_completed = TRUE;
+	system("rm encrypt.bin");
 
-    return (SUCCESS);
+	return ;
 }

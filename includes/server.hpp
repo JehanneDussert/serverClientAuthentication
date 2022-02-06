@@ -20,7 +20,7 @@ class   server
         char                        _resp[1024];
         int                         _fileSize;
         bool                        _closeConct;
-        std::string                 _key;
+        int                          _key;
         bool                        _completed;
         int	                        _initSocket();
         int	                        _checkSelect(struct timeval *time);
@@ -31,8 +31,8 @@ class   server
         bool    					_getRequest(int i);
         void                        _analyzeReq(int const i);
         bool    					_sendResponse(int i);
-        int     					_sendFile();
-        int                         _getFileSize();
+        void                        _encrypt();
+        void                        _getKey();
 
     public:
         server();

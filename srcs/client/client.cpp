@@ -2,8 +2,6 @@
 
 client::client(void) : _socket(0)
 {
-	std::ifstream	k(".key");
-	std::string		line;
 	memset(&this->_socket, 0, sizeof(int));
 	memset(&this->_addr, 0, sizeof(struct sockaddr_in6));
 	memset(&this->_req, 0, sizeof(char));
@@ -11,10 +9,7 @@ client::client(void) : _socket(0)
 	memset(this->_resp, 0, strlen(this->_resp));
 	memset(this->_req, 0, strlen(this->_req));
 	this->_fileSize = 0;
-
-	while (getline(k, line))
-		this->_key = line;
-	k.close();
+	this->_getKey();
 
 	return ;
 }
@@ -28,8 +23,6 @@ client::client(client const &src)
 
 client::client(int socket)
 {
-	std::ifstream	k(".key");
-	std::string		line;
 	memset(&this->_addr, 0, sizeof(struct sockaddr_in6));
 	memset(&this->_req, 0, sizeof(char));
 	memset(&this->_resp, 0, sizeof(char));
@@ -37,10 +30,7 @@ client::client(int socket)
 	memset(this->_req, 0, strlen(this->_req));
 	this->_fileSize = 0;
 	this->_socket = socket;
-
-	while (getline(k, line))
-		this->_key = line;
-	k.close();
+	this->_getKey();
 
 	return ;
 }
@@ -84,7 +74,7 @@ int client::runClient()
 		len = recv(this->_socket, this->_resp, sizeof(this->_resp) + 1, 0);
 		if (!this->_completed && !strcmp(this->_req, "ok"))
 		{
-			this->_writeFile(len);
+			this->_decrypt();
 			break;
 		}
 		memset(&this->_req, 0, (strlen(this->_req) + 1) * sizeof(char));

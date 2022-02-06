@@ -1,5 +1,27 @@
 #include "../../includes/server.hpp"
 
+void  server::_getKey()
+{
+	std::ifstream	file(".key");
+	std::string		line;
+	std::string    key;
+
+   int i = 0;
+	while (getline(file, line))
+	{
+		while (line[i++])
+		{
+			while (isspace(line[i]))
+				i++;
+			key += line[i];
+		}
+	}
+	this->_key = atoi(key.c_str());
+   file.close();
+
+   return ;
+}
+
 int	server::_checkSelect(struct timeval *time)
 {
 	int ret = select(this->_max_sd + 1, &this->_working_set, NULL, NULL, time);

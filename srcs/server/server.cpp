@@ -57,15 +57,9 @@ server  &server::operator=(server const &src)
 
 server::server(const int n)
 {
-	std::ifstream	k(".key");
-	std::string		line;
-
 	memset(this->_resp, 0, strlen(this->_resp));
 	memset(this->_req, 0, strlen(this->_req));
-
-	while (getline(k, line))
-		this->_key = line;
-
+	this->_getKey();
 	this->_opt = TRUE;
 	this->_nbClients = 0;
 	this->_minClients = n;
@@ -77,8 +71,6 @@ server::server(const int n)
 server::~server(void)
 {
 	this->_cnct.clear();
-	this->_key.clear();
-
 	memset(this->_resp, 0, strlen(this->_resp));
 	memset(this->_req, 0, strlen(this->_req));
 
@@ -94,8 +86,8 @@ int	server::runServer()
 	timeout.tv_sec  = 3 * 60;
 	timeout.tv_usec = 0;
 
-   while (g_run)
-   {
+   	while (g_run)
+   	{
     	memcpy(&this->_working_set, &this->_master_set, sizeof(this->_master_set));
       	std::cout << BOLD << ">>> SERVER IS RUNNING ON PORT [" << PORT << "]" << EOC << std::endl;
 		if ((desc_ready = this->_checkSelect(&timeout)) <= 0)
