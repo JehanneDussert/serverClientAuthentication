@@ -8,14 +8,13 @@ int		server::_getFileSize()
     std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(input), (std::istreambuf_iterator<char>()));
 
 	this->_fileSize = buffer.size();
-	strcpy(this->_resp, std::to_string(this->_fileSize).c_str());
+	// strcpy(this->_resp, std::to_string(this->_fileSize).c_str());
 	return (SUCCESS);
 }
 
 int		server::_sendFile()
 {
 	std::string buf;
-	
 	std::ifstream input("files/encrypted", std::ios::binary);
     std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(input), (std::istreambuf_iterator<char>()));
 	int i = 0;

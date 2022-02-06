@@ -18,6 +18,12 @@ case "${unameOut}" in
     Darwin*)    machine=Mac;;
 esac
 
+function clean {
+  rm files/decrypted.txt
+  rm files/encrypted
+  rm files/recv
+}
+
 # CHECK IF OPENSSL IS INSTALLED
 
 ##############################################################################################################################
@@ -34,6 +40,21 @@ if [ $# -eq 0 ]
     openssl rand -base64 32 > .key
 fi
 
+if [ "$1" == "re" ]
+  then
+    clean
+    echo "Please wait..."
+    make re
+    echo "Generating secret key..."
+    openssl rand -base64 32 > .key
+fi
+
+if [ "$1" == "up" ]
+  then
+    clean
+    make
+fi
+
 ##############################################################################################################################
 #                                   																						 #
 #                                   				* TEST *																 #
@@ -43,7 +64,11 @@ fi
 function test {
   i=1;
 	echo "Testing server with only one client..."
-  nc localhost 8080
+  ./server 1
+}
+
+function testClient {
+  ./client
   filename='.key'
   n=1
   while read line; do
@@ -58,6 +83,11 @@ if [ "$1" == "test" ]
     test
 fi
 
+if [ "$1" == "client" ]
+  then
+    testClient
+fi
+
 ##############################################################################################################################
 #                                   																						 #
 #                                   				*CLEAN *																 #
@@ -68,7 +98,5 @@ if [ "$1" == "clean" ]
   then
     make fclean
     rm .key
-    rm files/decrypted.txt
-    rm files/encrypted
-    rm files/recv
- fi
+    clean
+fi

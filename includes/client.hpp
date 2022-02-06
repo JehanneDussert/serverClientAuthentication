@@ -7,6 +7,7 @@ class   client
 {
     private:
         int					_socket;
+        std::string         _key;
         struct sockaddr_in6 _addr;
 		char				_req[1024];
 		char				_resp[1024];

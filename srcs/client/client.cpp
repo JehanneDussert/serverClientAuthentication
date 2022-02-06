@@ -7,6 +7,15 @@ client::client(void) : _socket(0)
 	memset(&this->_req, 0, sizeof(char));
 	memset(&this->_resp, 0, sizeof(char));
 	this->_fileSize = 0;
+	std::ifstream	k(".key");
+	std::string		line;
+
+	memset(this->_resp, 0, strlen(this->_resp));
+	memset(this->_req, 0, strlen(this->_req));
+
+	while (getline(k, line))
+		this->_key = line;
+	// k.close();
 
 	return ;
 }
@@ -21,11 +30,19 @@ client::client(client const &src)
 client::client(int socket)
 {
 	this->_socket = socket;
-
 	memset(&this->_addr, 0, sizeof(struct sockaddr_in6));
 	memset(&this->_req, 0, sizeof(char));
 	memset(&this->_resp, 0, sizeof(char));
 	this->_fileSize = 0;
+	std::ifstream	k(".key");
+	std::string		line;
+
+	memset(this->_resp, 0, strlen(this->_resp));
+	memset(this->_req, 0, strlen(this->_req));
+
+	while (getline(k, line))
+		this->_key = line;
+	// k.close();
 
 	return ;
 }
@@ -101,30 +118,31 @@ int client::runClient()
 		}
 		if (this->_completed)
 			break;
+		// std::cout << "recv: " << this->_resp << " | " << len << std::endl;
 		len = recv(this->_socket, this->_resp, sizeof(this->_resp) + 1, 0);
-		
-		if (!this->_fileSize && !this->_completed && !strcmp(this->_req, "ok"))
+		if (!this->_completed && !strcmp(this->_req, "ok"))
 		{
-			this->_fileSize = atoi(this->_resp);
-		}
-		else if (this->_fileSize)
-		{
+			this->_fileSize = len;
 			this->_writeFile();
 			this->_completed = TRUE;
+			std::cout << "Download completed" << std::endl;
 			break;
 		}
-		// std::cout << "resp: " << this->_resp << std::endl;
 		memset(&this->_req, 0, (strlen(this->_req) + 1) * sizeof(char));
 		std::cout << this->_resp << std::endl;
 		if (!strcmp(this->_resp, "Wait..."))
-			sleep(2);
+		{
+			sleep(1);
+		}
 		else if (!strcmp(this->_resp, "🔑 Password: "))
-			std::cin >> this->_req;
+		{
+			strcpy(this->_req, this->_key.c_str());
+		}
 		else if (this->_fileSize || (!this->_completed && !strcmp(this->_resp, "🔓 Success: valid key")))
 		{
 			strcpy(this->_req, "ok");
 		}
-		if (!this->_fileSize && len != strlen(this->_resp) + 1)
+		if (!this->_fileSize && len != strlen(this->_resp) + 1 && strcmp(this->_resp, "Wait..."))
 		{
 			perror("recv");
 			close(this->_socket);

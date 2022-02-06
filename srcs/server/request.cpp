@@ -25,14 +25,12 @@ bool  server::_getRequest(int i)
    if (!strcmp(this->_req, "ok") && !this->_fileSize)
    {
       this->_getFileSize();
-      // std::cout << "file: " << this->_resp << std::endl;
    }
-   else if (!strcmp(this->_req, "ok") && this->_fileSize && this->_connectedClients == this->_nbClients)
+   if (!strcmp(this->_req, "ok") && this->_fileSize)
    {
-      std::cout << "con: " << this->_connectedClients << '\t' << this->_nbClients << std::endl; 
-      std::cout << "Going to send\n";
       this->_sendFile();
-      this->_completed = TRUE;
+      this->_cnct[i] = TRUE;
+      // this->_completed = TRUE;
    }
    else if (!this->_completed && !this->_cnct[i] && !strcmp(this->_req, this->_key.c_str()))
    {
@@ -51,6 +49,7 @@ bool  server::_getRequest(int i)
    else if (this->_nbClients < this->_minClients)
    {
       strcpy(this->_resp, "Wait...");
+      sleep(1);
    }
    memset(&this->_req, 0, (strlen(this->_req) + 1) * sizeof(char));
    len = rc;
@@ -62,16 +61,30 @@ bool  server::_sendResponse(int i)
 {
    if (this->_completed)
    {
-      this->_nbClients--;
-      this->_connectedClients--;
-      this->_cnct[i] = FALSE;
+      // this->_nbClients--;
+      // this->_connectedClients--;
+      // this->_cnct[i] = FALSE;
       std::cout<<"[+] File transfer completed" << std::endl;
    }
    int rc = 0;
    int len = 0;
    this->_fileSize ? len = this->_fileSize : len = strlen(this->_resp);
+   if (this->_nbClients < this->_minClients)
+   {
+      // std::cout << this->_nbClients << ' ' << this->_minClients << std::endl;
+      // strcpy(this->_resp, "Wait...");
+      sleep(1);
+   }
+   // std::cout << "resp: " << this->_resp << std::endl;
    rc = send(i, this->_resp, len + 1, 0);
    std::cout << "[+] Response sent" << std::endl;
+   // ICI
+   if (this->_cnct[i])
+   {
+      this->_fileSize = 0;
+      this->_completed = FALSE;
+   }
+
    if (rc < 0)
    {
       perror("  send() failed");

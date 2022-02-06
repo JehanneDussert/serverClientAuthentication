@@ -3,8 +3,8 @@
 void	server::_rmClient(int i)
 {
    (void)i;
-   this->_nbClients--;
-   this->_connectedClients--;
+   // this->_nbClients--;
+   // this->_connectedClients--;
 }
 
 void  server::_closeConnection(int i)
