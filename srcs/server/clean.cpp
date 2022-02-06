@@ -4,7 +4,6 @@ void	server::_rmClient(int i)
 {
    (void)i;
    // this->_nbClients--;
-   // this->_connectedClients--;
 }
 
 void  server::_closeConnection(int i)
@@ -25,5 +24,4 @@ void    server::_closeSockets()
       if (FD_ISSET(i, &this->_master_set))
          close(i);
    }
-   // system("rm files/encrypted");
 }

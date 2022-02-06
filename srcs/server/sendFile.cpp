@@ -8,7 +8,7 @@ int		server::_getFileSize()
     std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(input), (std::istreambuf_iterator<char>()));
 
 	this->_fileSize = buffer.size();
-	// strcpy(this->_resp, std::to_string(this->_fileSize).c_str());
+
 	return (SUCCESS);
 }
 

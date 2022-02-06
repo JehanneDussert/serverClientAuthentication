@@ -1,10 +1,21 @@
 #include "../../includes/server.hpp"
 
+int	server::_checkSelect(struct timeval *time)
+{
+	int ret = select(this->_max_sd + 1, &this->_working_set, NULL, NULL, time);
+	
+	if (ret < 0)
+		perror("error: select.");
+	else if (ret == 0)
+		perror("select timed out.");
+
+	return ret;
+}
+
 bool	server::_newClient()
 {
    do
    {
-      // std::cout << "BEGIN | Number of clients: " << this->_nbClients << std::endl;
       this->_new_sd = accept(this->_listen_sd, NULL, NULL);
       this->_cnct.push_back(FALSE);
       if (this->_new_sd < 0)

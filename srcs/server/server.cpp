@@ -15,7 +15,6 @@ server::server(void)
 	this->_opt = TRUE;
 	this->_nbClients = 0;
 	this->_minClients = 0;
-	this->_connectedClients = 0;
 	this->_completed = FALSE;
 
 	return ;
@@ -41,7 +40,6 @@ server  &server::operator=(server const &src)
 	this->_opt = src._opt;
 	this->_nbClients = src._nbClients;
 	this->_minClients = src._minClients;
-	this->_connectedClients = src._connectedClients;
     this->_listen_sd = src._listen_sd;
     this->_max_sd = src._max_sd;
 	this->_new_sd = src._new_sd;
@@ -71,7 +69,6 @@ server::server(const int n)
 	this->_opt = TRUE;
 	this->_nbClients = 0;
 	this->_minClients = n;
-	this->_connectedClients = 0;
 	this->_completed = FALSE;
 
 	return ;
@@ -88,22 +85,10 @@ server::~server(void)
 	return ;
 }
 
-int	server::_checkSelect(struct timeval *time)
-{
-	int ret = select(this->_max_sd + 1, &this->_working_set, NULL, NULL, time);
-	
-	if (ret < 0)
-		perror("error: select.");
-	else if (ret == 0)
-		perror("select timed out.");
-
-	return ret;
-}
-
 int	server::runServer()
 {
-	int    				desc_ready;
-	struct timeval    timeout;
+	int					desc_ready;
+	struct timeval		timeout;
 
 	this->_initSocket();
 	timeout.tv_sec  = 3 * 60;
@@ -141,7 +126,7 @@ int	server::runServer()
 			}
 		}
    	}
-
    	this->_closeSockets();
+
 	return (SUCCESS);
 }

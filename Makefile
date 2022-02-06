@@ -4,7 +4,7 @@ SERVER_NAME = server
 CLIENT_PATH	= srcs/client/
 SERVER_PATH = srcs/server/
 
-CLIENT_FILES = main.cpp client.cpp recvFile.cpp
+CLIENT_FILES = main.cpp client.cpp recvFile.cpp init.cpp response.cpp
 SERVER_FILES = main.cpp server.cpp clean.cpp request.cpp init.cpp \
 				sendFile.cpp
 
