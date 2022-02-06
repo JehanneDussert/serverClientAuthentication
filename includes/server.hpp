@@ -1,8 +1,6 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-# define SERVER_BACKLOG 100
-
 # include "common.hpp"
 
 class   server
@@ -12,11 +10,10 @@ class   server
         int                         _opt;
         unsigned long               _nbClients;
         unsigned long              	_minClients;
-		unsigned long				_connectedClients;
         int                         _listen_sd;
         int                         _max_sd;
         int                         _new_sd;
-        struct sockaddr_in6          _addr;			// look diff with in
+        struct sockaddr_in6         _addr;
         struct fd_set               _master_set;
         struct fd_set               _working_set;
         char                        _req[1024];
@@ -32,6 +29,7 @@ class   server
         void    					_closeSockets(void);
         bool    					_newClient();
         bool    					_getRequest(int i);
+        void                        _analyzeReq(int const i);
         bool    					_sendResponse(int i);
         int     					_sendFile();
         int                         _getFileSize();
@@ -42,7 +40,6 @@ class   server
         server(server const &src);
         ~server();
         server  &operator=(server const &src);
-		
         int     runServer();
 };
 
