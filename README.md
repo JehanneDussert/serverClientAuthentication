@@ -3,7 +3,9 @@
 The objective of this project is to create a server that requires clients to authenticate themselves through a shared key. Once a certain number of clients are connected, the server allows the download of an encrypted file.
 
 <p align="center">
-	<video src="./assets/compressed.mp4" >
+    <video autoplay muted loop id="myVideo">
+	    <vsource src="./assets/compressed.mp4" type="video/mp4">
+    </video>
 </p>
 
 ## ✅ Completed
