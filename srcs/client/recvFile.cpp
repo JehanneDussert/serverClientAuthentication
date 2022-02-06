@@ -2,7 +2,7 @@
 
 int     client::_writeFile(int const len)
 {
-    std::string const file = "download/recv";
+    std::string const file = "recv";
     std::ofstream f(file.c_str(), std::ios::binary);
     this->_fileSize = len;
 
@@ -12,10 +12,10 @@ int     client::_writeFile(int const len)
     }
     f.close();
 
-    system("openssl enc -d -aes-256-cbc -in download/recv -out download/decrypted.txt -pass pass:.key");
-    system("rm download/recv");
+    system("openssl enc -d -aes-256-cbc -in recv -out decrypted.txt -pass pass:.key");
+    system("rm recv");
 	this->_completed = TRUE;
-	std::cout << "Download completed" << std::endl;
+	std::cout << "📁 Download completed" << std::endl;
 
     return (SUCCESS);
 }
