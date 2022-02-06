@@ -9,7 +9,6 @@ The objective of this project is to create a server that requires clients to aut
 - Encrypted file: send + receive
 
 ## 📈 To be completed
-- Function to encrypt + decrypt the file
 - Improve script bash
 - Tests: several clients, large files etc
 
