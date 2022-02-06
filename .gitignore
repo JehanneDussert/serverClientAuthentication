@@ -1,6 +1,8 @@
 .key
 .vscode
-
+doc/
+decrypted.txt
+files/encrypted
 
 # Prerequisites
 *.d
