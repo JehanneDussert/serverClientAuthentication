@@ -3,7 +3,7 @@
 The objective of this project is to create a server that requires clients to authenticate themselves through a shared key. Once a certain number of clients are connected, the server allows the download of an encrypted file.
 
 <p align="center">
-	<img src="./test/demo.gif" >
+	<img src="./assets/test.gif" >
 </p>
 
 ## ✅ Completed
