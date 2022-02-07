@@ -66,17 +66,17 @@ server::~server(void)
 	this->_cnct.clear();
 	memset(this->_resp, 0, sizeof(this->_resp));
 	memset(this->_req, 0, sizeof(this->_req));
-
 	return ;
 }
 
+#include <algorithm>  
 int	server::runServer()
 {
 	int					desc_ready;
 	struct timeval		timeout;
 
 	this->_initSocket();
-	timeout.tv_sec  = 6;
+	timeout.tv_sec  = 30;
 	timeout.tv_usec = 0;
    	while (g_run)
    	{
@@ -97,15 +97,12 @@ int	server::runServer()
 				else
 				{
 					this->_closeConct = FALSE;
-					while (g_run)
-					{
-						if (!this->_getRequest(i))
-							break;
-						if (!this->_sendResponse(i))
-							break;
-					}
+					this->_getRequest(i);
+					this->_sendResponse(i);
 					if (this->_closeConct)
+					{
 						this->_closeConnection(i);
+					}
 				}
 			}
 		}
