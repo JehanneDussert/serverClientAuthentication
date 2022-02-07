@@ -70,7 +70,7 @@ int client::runClient()
 	{
 		this->_analyzeReq(&len);
 		len = recv(this->_socket, this->_resp, sizeof(this->_resp) + 1, 0);
-		if (!this->_completed && !strcmp(this->_req, "ok"))
+		if (!strcmp(this->_req, "ok"))
 		{
 			this->_decrypt();
 			break;

@@ -24,6 +24,7 @@ void  server::_analyzeReq(int const i)
       strcpy(this->_resp, "Wait...");
       sleep(1);
    }
+   //std::cout << this->_resp << std::endl;
 
    return ;
 }
@@ -67,9 +68,8 @@ bool  server::_sendResponse(int i)
       // this->_cnct[i] = FALSE;
       std::cout<<"[S] File transfer completed" << std::endl;
    }
-   this->_fileSize ? len = this->_fileSize : len = strlen(this->_resp);
+   len = strlen(this->_resp);
    rc = send(i, this->_resp, len + 1, 0);
-
    std::cout << "[S] Response sent" << std::endl;
    if (this->_cnct[i])
    {
