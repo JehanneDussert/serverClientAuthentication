@@ -27,6 +27,7 @@ function clean {
 function compile {
     echo "Please wait..."
     make
+    clean
     echo "Generating secret key..."
     od -A n -t d -N 1 /dev/urandom >> .key
 }

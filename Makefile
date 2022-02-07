@@ -15,7 +15,7 @@ CLIENT_OBJECTS = $(CLIENT_SRCS:.cpp=.o)
 SERVER_OBJECTS = $(SERVER_SRCS:.cpp=.o)
 
 CXX = @clang++
-CXXFLAGS += -Wall -Wextra -Werror -std=c++98
+CXXFLAGS += -Wall -Wextra -Werror -std=c++11
 
 all : $(SERVER_NAME) $(CLIENT_NAME)
 	@echo "\033[0;32mCompilation done\t✅\033[0m"

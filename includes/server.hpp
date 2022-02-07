@@ -14,8 +14,8 @@ class   server
         int                         _max_sd;
         int                         _new_sd;
         struct sockaddr_in6         _addr;
-        struct fd_set               _master_set;
-        struct fd_set               _working_set;
+        fd_set                      _master_set;
+        fd_set						_working_set;
         char                        _req[1024];
         char                        _resp[1024];
         int                         _fileSize;
