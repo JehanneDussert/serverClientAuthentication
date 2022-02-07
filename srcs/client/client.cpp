@@ -67,7 +67,7 @@ int client::runClient()
 	{
 		this->_analyzeReq(&len);
 		len = recv(this->_socket, this->_resp, sizeof(this->_resp), 0);
-		if (!strcmp(this->_req, "ok"))
+		if (!strcmp(this->_req, "Ready to receive"))
 		{
 			this->_decrypt();
 			break;

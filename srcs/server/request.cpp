@@ -2,7 +2,7 @@
 
 void  server::_analyzeReq(int const i)
 {
-   if (this->_cnct[i]) //!strcmp(this->_req, "ok"))
+   if (this->_cnct[i])
    {
       this->_encrypt(i);
    }
@@ -63,13 +63,11 @@ bool  server::_sendResponse(int i)
    
    if (this->_completed)
    {
-      // this->_nbClients--;
-      // this->_cnct[i] = FALSE;
       std::cout<<"[S] File transfer completed" << std::endl;
    }
    len = strlen(this->_resp);
    rc = send(i, this->_resp, len + 1, 0);
-   std::cout << "[S] Response sent: " << i << std::endl;
+   std::cout << "[S] Response sent" << std::endl;
    if (this->_cnct[i])
    {
       this->_fileSize = 0;

@@ -15,7 +15,7 @@ void	client::_analyzeResp(unsigned long const len)
 	}
 	else if (!strcmp(this->_resp, "🔓 Success: valid key"))
 	{
-		strcpy(this->_req, "ok");
+		strcpy(this->_req, "Ready to receive");
 	}
 	if (len != strlen(this->_resp) + 1 && strcmp(this->_resp, "Wait..."))
 	{
