@@ -18,7 +18,6 @@ class   server
         fd_set						_working_set;
         char                        _req[1024];
         char                        _resp[1024];
-        int                         _fileSize;
         bool                        _closeConct;
         int                          _key;
         bool                        _completed;
