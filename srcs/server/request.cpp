@@ -68,10 +68,6 @@ bool  server::_sendResponse(int i)
    len = strlen(this->_resp);
    rc = send(i, this->_resp, len + 1, 0);
    std::cout << "[S] Response sent" << std::endl;
-   // if (this->_cnct[i])
-   // {
-   //    this->_completed = FALSE;
-   // }
    if (rc < 0)
    {
       perror("  send() failed");
