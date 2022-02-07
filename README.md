@@ -14,8 +14,23 @@ The objective of this project is to create a server that requires clients to aut
 
 Three cases:
 - user tries to start the server without any argument: an error occurs
+
+<p align="center">
+	<img src="./assets/error.png" >
+</p>
+
+
 - user starts the server with a number of clients and this number is not reached: the server asks to the clients to wait for more clients to connect
+
+<p align="center">
+	<img src="./assets/wait.png" >
+</p>
+
 - user starts the server with a number of clients and this number is reached: the server asks each client their secret key, checks it and sends an error if the key is wrong or sends an encrypted file if the key is right
+
+<p align="center">
+	<img src="./assets/success.png" >
+</p>
 
 ## 🔎 Server-client
 
