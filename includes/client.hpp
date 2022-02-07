@@ -21,7 +21,7 @@ class   client
         void                _decrypt();
     public:
         client();
-        client(int socket);
+        client(int const socket);
         client(client const &src);
         ~client();
         client      &operator=(client const &src);

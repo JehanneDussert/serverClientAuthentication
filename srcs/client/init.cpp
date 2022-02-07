@@ -4,9 +4,9 @@ void  client::_getKey()
 {
 	std::ifstream	file(".key");
 	std::string		line;
-	std::string    key;
+	std::string    	key;
+   	int 			i = 0;
 
-   int i = 0;
 	while (getline(file, line))
 	{
 		while (line[i++])
@@ -17,7 +17,7 @@ void  client::_getKey()
 		}
 	}
 	this->_key = atoi(key.c_str());
-   file.close();
+   	file.close();
 
    return ;
 }

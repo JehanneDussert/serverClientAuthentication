@@ -24,14 +24,14 @@ void  server::_analyzeReq(int const i)
       strcpy(this->_resp, "Wait...");
       sleep(1);
    }
-   //std::cout << this->_resp << std::endl;
 
    return ;
 }
 
 bool  server::_getRequest(int i)
 {
-   int rc, len;
+   int   rc;
+   int   len;
 
    rc = recv(i, this->_req, sizeof(this->_req), 0);
    if (rc < 0)
@@ -45,13 +45,12 @@ bool  server::_getRequest(int i)
    }
    if (rc == 0)
    {
-      this->_rmClient(i);
       this->_closeConct = TRUE;
       return (FALSE);
    }
    std::cout << "[S] Request received | " << strlen(this->_req) << " bytes" << std::endl;
    this->_analyzeReq(i);
-   memset(&this->_req, 0, (strlen(this->_req) + 1) * sizeof(char));
+   memset(&this->_req, 0, sizeof(this->_req));
    len = rc;
 
    return (TRUE);
@@ -82,7 +81,7 @@ bool  server::_sendResponse(int i)
       this->_closeConct = TRUE;
       return (FALSE);
    }
-   memset(&this->_resp, 0, (strlen(this->_resp) + 1) * sizeof(char));
+   memset(&this->_resp, 0, sizeof(this->_resp));
    if (this->_cnct[i])
    {
       std::cout << "[S] Client " << i << " is connected" << std::endl;

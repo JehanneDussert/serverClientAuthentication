@@ -20,7 +20,7 @@ void	client::_analyzeResp(unsigned long const len)
 		close(this->_socket);
 		exit(-1);
 	}
-	memset(&this->_resp, 0, (strlen(this->_resp) + 1) * sizeof(char));
+	memset(&this->_resp, 0, sizeof(this->_resp));
 
 	return ;
 }

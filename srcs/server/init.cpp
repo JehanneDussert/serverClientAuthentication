@@ -5,8 +5,8 @@ int  server::_getKey()
 	std::ifstream	file(".key");
 	std::string		line;
 	std::string    key;
+   int            i = 0;
 
-   int i = 0;
 	while (getline(file, line))
 	{
 		while (line[i++])

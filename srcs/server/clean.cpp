@@ -1,14 +1,5 @@
 #include "../../includes/server.hpp"
 
-void	server::_rmClient(int i)
-{
-   (void)i;
-   // if (!this->_cnct[i])
-   // {
-   //    this->_nbClients--;
-   // }
-}
-
 void  server::_closeConnection(int i)
 {
    close(i);

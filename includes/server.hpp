@@ -24,7 +24,6 @@ class   server
         bool                        _completed;
         int	                        _initSocket();
         int	                        _checkSelect(struct timeval *time);
-        void    					_rmClient(int i);
         void    					_closeConnection(int i);
         void    					_closeSockets(void);
         bool    					_newClient();

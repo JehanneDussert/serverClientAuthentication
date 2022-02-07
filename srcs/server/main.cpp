@@ -10,5 +10,5 @@ int main(int ac, char **av)
 	server	server(atoi(av[1]));
 	server.runServer();
 
-	return 0;
+	return (0);
 }

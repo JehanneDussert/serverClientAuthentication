@@ -1,16 +1,9 @@
 #include "../../includes/server.hpp"
 
-void	g_run_handler(int dummy)
-{
-	(void)dummy;
-	g_run = 0;
-	std::cout << "g_run: " << g_run << std::endl;
-}
-
 server::server(void)
 {
-	memset(this->_resp, 0, strlen(this->_resp));
-	memset(this->_req, 0, strlen(this->_req));
+	memset(this->_resp, 0, sizeof(this->_resp));
+	memset(this->_req, 0, sizeof(this->_req));
 
 	this->_opt = TRUE;
 	this->_nbClients = 0;
@@ -33,8 +26,8 @@ server  &server::operator=(server const &src)
       return *this;
 
 	this->_cnct.clear();
-	memset(this->_resp, 0, strlen(this->_resp));
-	memset(this->_req, 0, strlen(this->_req));
+	memset(this->_resp, 0, sizeof(this->_resp));
+	memset(this->_req, 0, sizeof(this->_req));
 
 	this->_cnct = src._cnct;
 	this->_opt = src._opt;
@@ -57,8 +50,8 @@ server  &server::operator=(server const &src)
 
 server::server(const int n)
 {
-	memset(this->_resp, 0, strlen(this->_resp));
-	memset(this->_req, 0, strlen(this->_req));
+	memset(this->_resp, 0, sizeof(this->_resp));
+	memset(this->_req, 0, sizeof(this->_req));
 	this->_getKey();
 	this->_opt = TRUE;
 	this->_nbClients = 0;
@@ -71,8 +64,8 @@ server::server(const int n)
 server::~server(void)
 {
 	this->_cnct.clear();
-	memset(this->_resp, 0, strlen(this->_resp));
-	memset(this->_req, 0, strlen(this->_req));
+	memset(this->_resp, 0, sizeof(this->_resp));
+	memset(this->_req, 0, sizeof(this->_req));
 
 	return ;
 }
@@ -90,8 +83,8 @@ int	server::runServer()
     	memcpy(&this->_working_set, &this->_master_set, sizeof(this->_master_set));
       	std::cout << BOLD << ">>> SERVER IS LISTENNING ON PORT [" << PORT << "]" << EOC << std::endl;
 		if ((desc_ready = this->_checkSelect(&timeout)) <= 0)
-	  		break;
-      	for (int i = 0; i <= this->_max_sd && desc_ready > 0; ++i)
+			break;
+		for (int i = 0; i <= this->_max_sd && desc_ready > 0; ++i)
 		{
 			if (FD_ISSET(i, &this->_working_set))
 			{
