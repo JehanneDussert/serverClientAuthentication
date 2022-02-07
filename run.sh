@@ -70,8 +70,7 @@ function test {
   ps -ef | grep your_process_name | grep -v grep | awk '{print $2}' | xargs kill
   ./server §i &
   ./client &
-  sleep 5
-  # (trap 'kill 0' SIGINT; ./server ./client)
+  sleep 7
 
   i=3
 	printf "\n\n-------------------------------------------------------
@@ -82,8 +81,7 @@ function test {
   ./client &
   ./client &
   ./client &
-  sleep 5
-  # (trap 'kill 0' SIGINT; ./server ./client ./client ./client)
+  sleep 7
   
   i=1
 	printf "\n\n-------------------------------------------------------
@@ -93,8 +91,7 @@ function test {
   ./server §i &
   ./client &
   ./client &
-  sleep 5
-  # (trap 'kill 0' SIGINT; ./server ./client ./client)
+  sleep 7
   ps -ef | grep your_process_name | grep -v grep | awk '{print $2}' | xargs kill
 }
 

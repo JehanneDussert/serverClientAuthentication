@@ -76,7 +76,7 @@ int	server::runServer()
 	struct timeval		timeout;
 
 	this->_initSocket();
-	timeout.tv_sec  = 3 * 60;
+	timeout.tv_sec  = 6;
 	timeout.tv_usec = 0;
    	while (g_run)
    	{

@@ -2,12 +2,16 @@
 
 void	client::_analyzeResp(unsigned long const len)
 {
+	// std::string k;
+
 	if (!strcmp(this->_resp, "Wait..."))
 	{
 		sleep(1);
 	}
 	else if (!strcmp(this->_resp, "🔑 Password: "))
 	{
+		// std::cin >> k;
+		// strcpy(this->_req, k.c_str());
 		strcpy(this->_req, std::to_string(this->_key).c_str());
 	}
 	else if ((!this->_completed && !strcmp(this->_resp, "🔓 Success: valid key")))
