@@ -24,13 +24,16 @@ function clean {
 #                                   																						 #
 ##############################################################################################################################
 
-if [ $# -eq 0 ]
-  then
-    clean
+function compile {
     echo "Please wait..."
-    make re
+    make
     echo "Generating secret key..."
     od -A n -t d -N 1 /dev/urandom >> .key
+}
+
+if [ $# -eq 0 ]
+  then
+    compile
 fi
 
 if [ "$1" == "re" ]
@@ -39,11 +42,14 @@ if [ "$1" == "re" ]
     echo "Please wait..."
     make re
     echo "Generating secret key..."
+    od -A n -t d -N 1 /dev/urandom >> .key
 fi
 
 if [ "$1" == "up" ]
   then
     clean
+    echo "Generating secret key..."
+    od -A n -t d -N 1 /dev/urandom >> .key
     make
 fi
 
@@ -54,10 +60,8 @@ fi
 ##############################################################################################################################
 
 function test {
-  make
+  compile
   i=1
-
-  ps -ef | grep your_process_name | grep -v grep | awk '{print $2}' | xargs kill
 
 	printf "\n-----------------------------------------------------------------
 | Testing server with no argument (expected minimum of clients) |
@@ -67,7 +71,6 @@ function test {
 	printf "\n\n-------------------------------------------------------------
 | Testing server with only one client (expected at least 1) |
 -------------------------------------------------------------\n"
-  ps -ef | grep your_process_name | grep -v grep | awk '{print $2}' | xargs kill
   ./server §i &
   ./client &
   sleep 7
@@ -76,7 +79,6 @@ function test {
 	printf "\n\n-------------------------------------------------------
 | Testing server with 3 clients (expected at least 3) |
 -------------------------------------------------------\n"
-  ps -ef | grep your_process_name | grep -v grep | awk '{print $2}' | xargs kill
   ./server §i &
   ./client &
   ./client &
@@ -87,12 +89,10 @@ function test {
 	printf "\n\n-------------------------------------------------------
 | Testing server with 2 clients (expected at least 1) |
 -------------------------------------------------------\n"
-  ps -ef | grep your_process_name | grep -v grep | awk '{print $2}' | xargs kill
   ./server §i &
   ./client &
   ./client &
   sleep 7
-  ps -ef | grep your_process_name | grep -v grep | awk '{print $2}' | xargs kill
 }
 
 if [ "$1" == "test" ]
@@ -109,6 +109,5 @@ fi
 if [ "$1" == "clean" ]
   then
     make fclean
-    rm .key
     clean
 fi
