@@ -12,7 +12,7 @@ The objective of this project is to create a server that requires clients to aut
 - Checking client key once enough clients are connected
 - Encrypted file: send + receive
 - Tests: several clients, large files etc
-- Script bash: test, clean, update
+- Script bash: clean, update
 
 ## Resume
 
@@ -39,7 +39,7 @@ Three cases:
 ## 🔎 Server-client
 
 IO Multiplexing: chose to work with select().
-[Advantage] : Portable solution, adapted to MacOS and Linux unlike poll() and epoll().
+[Advantage] : Portable solution, adapted to MacOS and Linux.
 [Disadvantage] : Less optimized than poll() and epoll().
 
 I referred to the IBM documentation to build my server and client and to Jacob Sorber's Youtube channel.
