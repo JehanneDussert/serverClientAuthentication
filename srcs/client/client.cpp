@@ -7,6 +7,7 @@ client::client(void) : _socket(0)
 	memset(this->_resp, 0, (strlen(this->_resp) + 1) * sizeof(char));
 	memset(this->_req, 0, (strlen(this->_req) + 1) * sizeof(char));
 	this->_getKey();
+	this->_connected = 0;
 
 	return ;
 }
@@ -25,6 +26,7 @@ client::client(int const socket)
 	memset(this->_req, 0, sizeof(this->_req));
 	this->_socket = socket;
 	this->_getKey();
+	this->_connected = 0;
 
 	return ;
 }
@@ -62,12 +64,14 @@ int client::runClient()
 
 	this->_newSocket();
 	this->_handle_connection();
+	memset(&this->_req, 0, sizeof(this->_req));
+	memset(&this->_resp, 0, sizeof(this->_resp));
 
 	while (g_run)
 	{
 		this->_analyzeReq(&len);
 		len = recv(this->_socket, this->_resp, sizeof(this->_resp), 0);
-		if (!strcmp(this->_req, "Ready to receive"))
+		if (this->_connected && strcmp(this->_resp, "Wait..."))
 		{
 			this->_decrypt();
 			break;

@@ -2,14 +2,21 @@
 
 void  server::_analyzeReq(int const i)
 {
-   if (this->_cnct[i])
+   if (this->_connected == this->_minClients && this->_nbClients)
    {
+      this->_nbClients--;
       this->_encrypt(i);
+   }
+   else if (this->_cnct[i] && this->_connected < this->_minClients)
+   {
+      strcpy(this->_resp, "Wait...");
+      sleep(1);
    }
    else if (!this->_completed && !strcmp(this->_req, (std::to_string(this->_key)).c_str()))
    {
       strcpy(this->_resp, "🔓 Success: valid key");
       this->_cnct[i] = TRUE;
+      this->_connected++;
    }
    else if (!strlen(this->_req) && this->_nbClients >= this->_minClients)
    {
@@ -60,13 +67,17 @@ bool  server::_sendResponse(int i)
 {
    int rc = 0;
    int len = 0;
-   
-   if (this->_completed)
-   {
-      std::cout<<"[S] File transfer completed" << std::endl;
-   }
+
    len = strlen(this->_resp);
    rc = send(i, this->_resp, len + 1, 0);
+   if (this->_recv == this->_minClients)
+   {
+      std::cout<<"[S] File transfer completed" << std::endl;
+      this->_recv = 0;
+      this->_connected = 0;
+      memset(&this->_resp, 0, sizeof(this->_resp));
+      this->_cnct.clear();
+   }
    std::cout << "[S] Response sent" << std::endl;
    if (rc < 0)
    {

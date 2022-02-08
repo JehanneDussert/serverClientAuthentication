@@ -9,6 +9,8 @@ server::server(void)
 	this->_nbClients = 0;
 	this->_minClients = 0;
 	this->_completed = FALSE;
+	this->_connected = 0;
+	this->_recv = 0;
 
 	return ;
 }
@@ -41,6 +43,7 @@ server  &server::operator=(server const &src)
     this->_working_set = src._working_set;
     this->_closeConct = src._closeConct;
     this->_key = src._key;
+	this->_recv = src._recv;
 
 	strcpy(this->_resp, src._req);
 	strcpy(this->_resp, src._resp);
@@ -57,6 +60,8 @@ server::server(const int n)
 	this->_nbClients = 0;
 	this->_minClients = n;
 	this->_completed = FALSE;
+	this->_connected = 0;
+	this->_recv = 0;
 
 	return ;
 }
@@ -69,7 +74,6 @@ server::~server(void)
 	return ;
 }
 
-#include <algorithm>  
 int	server::runServer()
 {
 	int					desc_ready;
@@ -81,7 +85,7 @@ int	server::runServer()
    	while (g_run)
    	{
     	memcpy(&this->_working_set, &this->_master_set, sizeof(this->_master_set));
-      	std::cout << BOLD << ">>> SERVER IS LISTENNING ON PORT [" << PORT << "]" << EOC << std::endl;
+      	std::cout << BOLD << ">>> SERVER IS LISTENING ON PORT [" << PORT << "]" << EOC << std::endl;
 		if ((desc_ready = this->_checkSelect(&timeout)) <= 0)
 			break;
 		for (int i = 0; i <= this->_max_sd && desc_ready > 0; ++i)

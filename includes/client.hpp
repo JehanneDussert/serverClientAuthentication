@@ -7,6 +7,7 @@ class   client
 {
     private:
         int					_socket;
+        bool                _connected;
         int                  _key;
         struct sockaddr_in6 _addr;
 		char				_req[1024];

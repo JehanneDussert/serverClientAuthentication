@@ -6,7 +6,7 @@ void	server::_encrypt(int i)
 	std::ofstream	fout;
 	std::string		buf;
 	char			c;
-	size_t				len = 0;
+	size_t			len = 0;
 	
 	fin.open("files/toEncrypt.txt", std::ifstream::in);
     fout.open("encrypted.bin", std::ofstream::out);
@@ -32,6 +32,7 @@ void	server::_encrypt(int i)
     fin.close();
     fout.close();
 	this->_cnct[i] = FALSE;
+	this->_recv++;
 
 	return ;
 }

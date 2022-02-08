@@ -11,6 +11,7 @@ class   server
         unsigned long               _nbClients;
         unsigned long              	_minClients;
         int                         _listen_sd;
+		size_t						_connected;
         int                         _max_sd;
         int                         _new_sd;
         struct sockaddr_in6         _addr;
@@ -21,6 +22,7 @@ class   server
         bool                        _closeConct;
         int                          _key;
         bool                        _completed;
+		size_t						_recv;
         int	                        _initSocket();
         int	                        _checkSelect(struct timeval *time);
         void    					_closeConnection(int i);

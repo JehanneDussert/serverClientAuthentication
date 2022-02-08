@@ -8,9 +8,10 @@ void	client::_decrypt()
 
     if (!strlen(this->_resp))
     {
-        std::cerr << "[C] Error: file has not been sent" << std::endl;
-        close(this->_socket);
-        exit(-1);
+        return;
+        // std::cerr << "[C] Error: file has not been sent" << std::endl;
+        // close(this->_socket);
+        // exit(-1);
     }
     for (size_t i = 0; i < strlen(this->_resp); i++)
 	{
@@ -19,8 +20,5 @@ void	client::_decrypt()
     }
     decrypt.close();
 	std::cout << "[C] " << "✅ File decrypted" << std::endl;
-	this->_completed = TRUE;
 	std::cout << "[C] " << "📁 Download completed" << std::endl;
-
-	return ;
 }
