@@ -8,8 +8,8 @@ class   server
     private:
         std::vector<bool>           _cnct;
         int                         _opt;
-        unsigned long               _nbClients;
-        unsigned long              	_minClients;
+        size_t                      _nbClients;
+        size_t                    	_minClients;
         int                         _listen_sd;
 		size_t						_connected;
         int                         _max_sd;
@@ -20,7 +20,7 @@ class   server
         char                        _req[1024];
         char                        _resp[1024];
         bool                        _closeConct;
-        int                          _key;
+        int                         _key;
         bool                        _completed;
 		size_t						_recv;
         int	                        _initSocket();
@@ -32,7 +32,7 @@ class   server
         void                        _analyzeReq(int const i);
         bool    					_sendResponse(int i);
         void                        _encrypt(int i);
-        int                         _getKey();
+        void                        _getKey();
 
     public:
         server();

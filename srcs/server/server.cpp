@@ -87,7 +87,7 @@ int	server::runServer()
     	memcpy(&this->_working_set, &this->_master_set, sizeof(this->_master_set));
       	std::cout << BOLD << ">>> SERVER IS LISTENING ON PORT [" << PORT << "]" << EOC << std::endl;
 		if ((desc_ready = this->_checkSelect(&timeout)) <= 0)
-			break;
+			break ;
 		for (int i = 0; i <= this->_max_sd && desc_ready > 0; ++i)
 		{
 			if (FD_ISSET(i, &this->_working_set))

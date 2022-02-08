@@ -2,7 +2,7 @@
 
 void  server::_analyzeReq(int const i)
 {
-   if (this->_connected == this->_minClients && this->_nbClients)
+   if (this->_connected == this->_minClients)
    {
       this->_nbClients--;
       this->_encrypt(i);

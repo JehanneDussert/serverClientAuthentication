@@ -1,6 +1,6 @@
 #include "../../includes/server.hpp"
 
-int  server::_getKey()
+void  server::_getKey()
 {
 	std::ifstream	file(".key");
 	std::string		line;
@@ -19,7 +19,7 @@ int  server::_getKey()
 	this->_key = atoi(key.c_str());
    file.close();
 
-   return (this->_key);
+   return ;
 }
 
 int	server::_checkSelect(struct timeval *time)
@@ -27,7 +27,7 @@ int	server::_checkSelect(struct timeval *time)
 	int ret = select(this->_max_sd + 1, &this->_working_set, NULL, NULL, time);
 	
 	if (ret < 0)
-		perror("error: select.");
+		perror("select() failed");
 	else if (ret == 0)
 		perror("select timed out.");
 

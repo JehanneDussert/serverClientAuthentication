@@ -82,11 +82,6 @@ To clean:
 bash run.sh clean
 ```
 
-To test:
-```
-bash run.sh test
-```
-
 Update:
 ```
 bash run.sh up

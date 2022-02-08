@@ -20,7 +20,7 @@ void	client::_analyzeResp(unsigned long const len)
 	}
 	if (len != strlen(this->_resp) + 1 && strcmp(this->_resp, "Wait..."))
 	{
-		perror("recv");
+		perror("Recv() failed");
 		close(this->_socket);
 		exit(-1);
 	}
@@ -35,7 +35,7 @@ void	client::_analyzeReq(unsigned long *len)
 
 	if (*len != strlen(this->_req) + 1)
 	{
-		perror("send");
+		perror("Send() failed");
 		close(this->_socket);
 		exit(-1);
 	}

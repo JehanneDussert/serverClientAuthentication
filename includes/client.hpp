@@ -12,7 +12,6 @@ class   client
         struct sockaddr_in6 _addr;
 		char				_req[1024];
 		char				_resp[1024];
-        bool                _completed;
         int                 _newSocket();
         int                 _handle_connection();
         void                _getSize(const std::string& address);
