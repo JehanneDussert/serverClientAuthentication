@@ -80,7 +80,7 @@ int	server::runServer()
 	struct timeval		timeout;
 
 	this->_initSocket();
-	timeout.tv_sec  = 30;
+	timeout.tv_sec  = 180;
 	timeout.tv_usec = 0;
    	while (g_run)
    	{
